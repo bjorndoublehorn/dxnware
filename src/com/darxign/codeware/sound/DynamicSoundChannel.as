@@ -13,22 +13,12 @@ package com.darxign.codeware.sound {
 	import flash.utils.Endian;
 	import flash.utils.getTimer;
 	/**
-	 * Dynamically generates FLV WAV audio for NetStream
-	 * which allows to SEW TOGETHER multiple Sound objects gaplessly (!!!).
-	 * It solves the problem of the classic dynamic sound generation (SAMPLE_DATA event)
-	 * by allowing much bigger audio cache. (Relatively small cache of the classic sampleData technique
-	 * (which is 8192 samples max) results in unpleasant glitchy repeats at moments when(if) your application
-	 * freezes, for some reason.) The only downside is that your audio is reduced to 16 bit depth
-	 * which is an FLV format restriction.
-	 * Remember!!! To achive gapless sewing your Sound objects themselves in the sequence array
-	 * must be embedded gaplessly (for example via lame mp3 encoder + hxSwfMl or using Flash Professional).
-	 * @author darxign aka brain-in-the-bunker
+	 * @author darxign
 	 */
 	[Event(name="soundComplete", type="flash.events.Event")]
 	public class DynamicSoundChannel extends EventDispatcher {
 		
 		static public const TIME_AHEAD_inMs:int = 5000
-		static public const TIME_CHECK_inMs:int = 1000
 		
 		static private const SAMPLES_PER_MILLISECOND:Number = 44.1
 		static private const TIME_PER_TAG_inMs:int = 100
@@ -67,17 +57,6 @@ package com.darxign.codeware.sound {
 		
 		private var video:Video
 		
-		/**
-		 * @param repeatConstantly  If the sound sequence should replay again and again
-		 * @param delay             Time in milliseconds before the sound generation starts
-		 * @param fadeInDuration    Time in milliseconds of the fade in period
-		 * @param fadeOutDuration   Time in milliseconds of the fade out period
-		 * @param sequence          An array with sounds that should play consecutively
-		 * @param sndTransform      Initial sound transform
-		 * @param fps               The object which must implement returning the current application FPS in its value field (fps.value)
-		 * @param timeAhead         How much time the NetStream tends to pregenerate flv data in its cache
-		 * @param timeCheck         Depricated   
-		 */
 		public function DynamicSoundChannel (
 		repeatConstantly:Boolean,
 		delay:Number,
@@ -86,16 +65,11 @@ package com.darxign.codeware.sound {
 		sequence:Array,
 		sndTransform:SoundTransform,
 		fps:Object,
-		timeAhead:int = TIME_AHEAD_inMs,
-		timeCheck:int = TIME_CHECK_inMs)
+		timeAhead:int = TIME_AHEAD_inMs)
 		{
 			
 			if (fps == null) {
 				throw new Error("fps object is null")
-			}
-			
-			if (timeAhead < timeCheck) {
-				throw new Error("timeAheadMs < timeCheckMs")
 			}
 			
 			this.soundList = new Vector.<Sound>()
