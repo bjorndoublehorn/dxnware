@@ -28,7 +28,6 @@ package com.darxign.codeware.sound {
 	public class DynamicSoundChannel extends EventDispatcher {
 		
 		static public const TIME_AHEAD_inMs:int = 5000
-		static public const TIME_CHECK_inMs:int = 1000
 		
 		static private const SAMPLES_PER_MILLISECOND:Number = 44.1
 		static private const TIME_PER_TAG_inMs:int = 100
@@ -76,7 +75,6 @@ package com.darxign.codeware.sound {
 		 * @param sndTransform      Initial sound transform
 		 * @param fps               The object which must implement returning the current application FPS in its value field (fps.value)
 		 * @param timeAhead         How much time the NetStream tends to pregenerate flv data in its cache
-		 * @param timeCheck         Depricated   
 		 */
 		public function DynamicSoundChannel (
 		repeatConstantly:Boolean,
@@ -86,16 +84,11 @@ package com.darxign.codeware.sound {
 		sequence:Array,
 		sndTransform:SoundTransform,
 		fps:Object,
-		timeAhead:int = TIME_AHEAD_inMs,
-		timeCheck:int = TIME_CHECK_inMs)
+		timeAhead:int = TIME_AHEAD_inMs)
 		{
 			
 			if (fps == null) {
 				throw new Error("fps object is null")
-			}
-			
-			if (timeAhead < timeCheck) {
-				throw new Error("timeAheadMs < timeCheckMs")
 			}
 			
 			this.soundList = new Vector.<Sound>()
